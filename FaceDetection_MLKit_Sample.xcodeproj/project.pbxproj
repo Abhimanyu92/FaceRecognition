@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1265B890BA42D0237EBA5109 /* Pods_FaceDetection_MLKit_Sample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53FCC8DF7ADE79D9905B29DF /* Pods_FaceDetection_MLKit_Sample.framework */; };
 		6A2216212679D4530081CAEA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2216202679D4530081CAEA /* AppDelegate.swift */; };
 		6A2216232679D4530081CAEA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2216222679D4530081CAEA /* SceneDelegate.swift */; };
 		6A2216252679D4530081CAEA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A2216242679D4530081CAEA /* ViewController.swift */; };
@@ -16,6 +17,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4D3168606C99830F7085EB9C /* Pods-FaceDetection_MLKit_Sample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceDetection_MLKit_Sample.release.xcconfig"; path = "Target Support Files/Pods-FaceDetection_MLKit_Sample/Pods-FaceDetection_MLKit_Sample.release.xcconfig"; sourceTree = "<group>"; };
+		53FCC8DF7ADE79D9905B29DF /* Pods_FaceDetection_MLKit_Sample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FaceDetection_MLKit_Sample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		64D33D3EE3329FA91FCC2073 /* Pods-FaceDetection_MLKit_Sample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FaceDetection_MLKit_Sample.debug.xcconfig"; path = "Target Support Files/Pods-FaceDetection_MLKit_Sample/Pods-FaceDetection_MLKit_Sample.debug.xcconfig"; sourceTree = "<group>"; };
 		6A22161D2679D4530081CAEA /* FaceDetection_MLKit_Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FaceDetection_MLKit_Sample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A2216202679D4530081CAEA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6A2216222679D4530081CAEA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -31,17 +35,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1265B890BA42D0237EBA5109 /* Pods_FaceDetection_MLKit_Sample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		407AFC67C687A433AE59C1C7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				53FCC8DF7ADE79D9905B29DF /* Pods_FaceDetection_MLKit_Sample.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		578FC711958CF6E100D937F5 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				64D33D3EE3329FA91FCC2073 /* Pods-FaceDetection_MLKit_Sample.debug.xcconfig */,
+				4D3168606C99830F7085EB9C /* Pods-FaceDetection_MLKit_Sample.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		6A2216142679D4530081CAEA = {
 			isa = PBXGroup;
 			children = (
 				6A22161F2679D4530081CAEA /* FaceDetection_MLKit_Sample */,
 				6A22161E2679D4530081CAEA /* Products */,
+				578FC711958CF6E100D937F5 /* Pods */,
+				407AFC67C687A433AE59C1C7 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -74,9 +98,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6A2216312679D4570081CAEA /* Build configuration list for PBXNativeTarget "FaceDetection_MLKit_Sample" */;
 			buildPhases = (
+				50B7E6E27EF14E22C7DF465C /* [CP] Check Pods Manifest.lock */,
 				6A2216192679D4530081CAEA /* Sources */,
 				6A22161A2679D4530081CAEA /* Frameworks */,
 				6A22161B2679D4530081CAEA /* Resources */,
+				ED9C08BD343F19D3C4FDC7D0 /* [CP] Embed Pods Frameworks */,
+				1795E564C9C3BA6D82F8D1B4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -131,6 +158,65 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1795E564C9C3BA6D82F8D1B4 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FaceDetection_MLKit_Sample/Pods-FaceDetection_MLKit_Sample-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FaceDetection_MLKit_Sample/Pods-FaceDetection_MLKit_Sample-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FaceDetection_MLKit_Sample/Pods-FaceDetection_MLKit_Sample-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		50B7E6E27EF14E22C7DF465C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FaceDetection_MLKit_Sample-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ED9C08BD343F19D3C4FDC7D0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FaceDetection_MLKit_Sample/Pods-FaceDetection_MLKit_Sample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FaceDetection_MLKit_Sample/Pods-FaceDetection_MLKit_Sample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FaceDetection_MLKit_Sample/Pods-FaceDetection_MLKit_Sample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6A2216192679D4530081CAEA /* Sources */ = {
@@ -283,12 +369,14 @@
 		};
 		6A2216322679D4570081CAEA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 64D33D3EE3329FA91FCC2073 /* Pods-FaceDetection_MLKit_Sample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SF38M9PTVG;
 				INFOPLIST_FILE = FaceDetection_MLKit_Sample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -302,12 +390,14 @@
 		};
 		6A2216332679D4570081CAEA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4D3168606C99830F7085EB9C /* Pods-FaceDetection_MLKit_Sample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SF38M9PTVG;
 				INFOPLIST_FILE = FaceDetection_MLKit_Sample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
