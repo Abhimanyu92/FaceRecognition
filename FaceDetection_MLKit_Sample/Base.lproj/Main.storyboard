@@ -16,8 +16,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" semanticContentAttribute="forceLeftToRight" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="face-1" translatesAutoresizingMaskIntoConstraints="NO" id="WqF-W8-OtW">
-                                <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" semanticContentAttribute="forceLeftToRight" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WqF-W8-OtW">
+                                <rect key="frame" x="0.0" y="0.0" width="390" height="675.33333333333337"/>
                             </imageView>
                             <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="88y-Ku-rEY">
                                 <rect key="frame" x="60" y="153" width="240" height="128"/>
@@ -29,12 +29,35 @@
                                 <rect key="frame" x="75" y="384" width="240" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="z1h-JS-5oZ">
+                                <rect key="frame" x="16" y="691.33333333333337" width="358" height="118.66666666666663"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uPn-ee-XbO">
+                                        <rect key="frame" x="0.0" y="0.0" width="179" height="118.66666666666667"/>
+                                        <state key="normal" title="Nose"/>
+                                        <connections>
+                                            <action selector="animateNose:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ebl-XQ-lrf"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ORb-g1-Kwm">
+                                        <rect key="frame" x="179" y="0.0" width="179" height="118.66666666666667"/>
+                                        <state key="normal" title="Lips"/>
+                                        <connections>
+                                            <action selector="animateLips:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9MD-h4-BJB"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="WqF-W8-OtW" secondAttribute="bottom" id="MPi-57-rh6"/>
+                            <constraint firstItem="z1h-JS-5oZ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="8B9-5c-MbE"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="z1h-JS-5oZ" secondAttribute="trailing" constant="16" id="IYD-1c-TYM"/>
+                            <constraint firstItem="z1h-JS-5oZ" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="KOU-dl-nfi"/>
                             <constraint firstItem="WqF-W8-OtW" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="NKS-Qp-e7L"/>
+                            <constraint firstItem="WqF-W8-OtW" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.8" id="Oph-5g-Z9V"/>
+                            <constraint firstItem="z1h-JS-5oZ" firstAttribute="top" secondItem="WqF-W8-OtW" secondAttribute="bottom" constant="16" id="dwa-zR-qWY"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="WqF-W8-OtW" secondAttribute="trailing" id="frc-dW-5yC"/>
                             <constraint firstItem="WqF-W8-OtW" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="gTy-sy-R6y"/>
                         </constraints>
@@ -51,7 +74,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="face-1" width="329" height="480"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
