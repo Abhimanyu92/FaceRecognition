@@ -11,30 +11,47 @@ import MLKitVision
 
 class ViewController: UIViewController {
 
+    //MARK:- Outlets
     @IBOutlet var snippetImageView: UIImageView!
     @IBOutlet var faceImageView: UIImageView!
     @IBOutlet var blankImageView: UIImageView!
     
+    //MARK:- Variables
     var noseImageView : UIImageView!
     
+    //MARK:- View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+        initializeFaceDetection()
+    }
+    
+    //MARK:- Initialize Face Detection
+    func initializeFaceDetection(){
+        
+        //Initializing face detector options
         let options = FaceDetectorOptions()
+        
+        //Adding properties
         options.performanceMode = .accurate
         options.landmarkMode = .all
         options.contourMode = .all
         options.classificationMode = .none
         
-        let testImg = resizeImage(image: UIImage.init(named: "ayush.png")!, newWidth: 400)!
-        faceImageView.image = testImg
+        //Adding image and resizing as per ML Kit guidelines
+        let sampleImage = resizeImage(image: UIImage.init(named: "face-1")!, newWidth: 400)!
+        faceImageView.image = sampleImage
         let image = UIImage.init()
-        let visionImage = VisionImage(image: testImg)
+        
+        //Initializing vision Image object with our sample image
+        let visionImage = VisionImage(image: sampleImage)
         visionImage.orientation = image.imageOrientation
         
+        //Initializing face detector object with above defined properties
         let faceDetector = FaceDetector.faceDetector(options: options)
         
+        //Starting face detection process
         weak var weakSelf = self
         faceDetector.process(visionImage) { faces, error in
           guard let _ = weakSelf else {
@@ -46,22 +63,26 @@ class ViewController: UIViewController {
             return
           }
 
+            //Faces found
             for face in faces {
               let faceFrame = face.frame
-                var x = 0.0, y=0.0, w=0.0, h=0.0
-                var noseX = 0.0, noseY = 0.0, noseW = 0.0, noseH = 0.0
+                var lipsX = 0.0, lipsY=0.0, lipsW=0.0, lipsH=0.0        //Lips dimensions
+                var noseX = 0.0, noseY = 0.0, noseW = 0.0, noseH = 0.0  //Nose dimensions
                                 
+                //Calculating lips area with mouth position
                 if let mouthLeft = face.landmark(ofType: .mouthLeft){
                     let mouthLeftPos = mouthLeft.position
                     print("Mouth Left = \(mouthLeftPos)")
-                    x = Double(mouthLeftPos.x)
-                    y = Double(mouthLeftPos.y)
+                    lipsX = Double(mouthLeftPos.x)
+                    lipsY = Double(mouthLeftPos.y)
                 }
                 if let mouthRight = face.landmark(ofType: .mouthRight){
                     let mouthRightPos = mouthRight.position
                     print("Mouth Right = \(mouthRightPos)")
-                    w = Double(mouthRightPos.x) - x
+                    lipsW = Double(mouthRightPos.x) - lipsX
                 }
+                
+                //Calculating nose area with nose position
                 var avgNoseHeight = 0.0
                 if let noseBridge = face.contour(ofType: .noseBridge){
                     let nosePoints = noseBridge.points
@@ -85,10 +106,10 @@ class ViewController: UIViewController {
                     let lastPoint = noseBottomPoints.count-1
                     noseW = Double(noseBottomPoints[lastPoint].x) - Double((noseBottomPoints)[0].x)
                     print(noseBottomPoints)
-                    var currentPoint:CGPoint = CGPoint(x: noseBottomPoints[0].x, y: noseBottomPoints[0].y)
+//                    var currentPoint:CGPoint = CGPoint(x: noseBottomPoints[0].x, y: noseBottomPoints[0].y)
                     for noses in noseBottomPoints{
 //                        self.drawLineFromPoint(start: currentPoint, toPoint: CGPoint(x: noses.x, y: noses.y), ofColor: .green, inView: self.view)
-                        currentPoint = CGPoint(x: noses.x, y: noses.y)
+//                        currentPoint = CGPoint(x: noses.x, y: noses.y)
                         avgNoseBottom = avgNoseBottom+Double(noses.y)
                     }
                     avgNoseBottom = avgNoseBottom/Double(noseBottomPoints.count)
@@ -100,7 +121,7 @@ class ViewController: UIViewController {
                     print("Mouth Bottom = \(mouthBottomPos)")
                 }
                 
-                h = Double(faceFrame.origin.y+faceFrame.size.height) - y
+                lipsH = Double(faceFrame.origin.y+faceFrame.size.height) - lipsY
                 
               if let leftEye = face.landmark(ofType: .leftEye) {
                 let leftEyePosition = leftEye.position
@@ -112,8 +133,9 @@ class ViewController: UIViewController {
                 print("Left eye points \(leftEyePoints)")
               }
                 
-                let frameOfLowerLip = CGRect.init(x: x, y: y, width: w, height: h)
+                let frameOfLowerLip = CGRect.init(x: lipsX, y: lipsY, width: lipsW, height: lipsH)
                 
+                //Taking screenshot of lips and adding it to another image which will animate
                 let snapshot = self.view.snapshot(of: frameOfLowerLip, afterScreenUpdates: true)
                 self.snippetImageView.image = snapshot
                 self.snippetImageView.frame = frameOfLowerLip
@@ -121,8 +143,8 @@ class ViewController: UIViewController {
                 self.blankImageView.frame = frameOfLowerLip
                 self.blankImageView.isHidden = false
                 self.view.bringSubviewToFront(self.snippetImageView)
-//                self.animateFace(image: self.snippetImageView, direction: true)
                 
+                //Taking screenshot of nose and adding it to another image which will animate
                 let noseFrame = CGRect(x: noseX, y: noseY, width: noseW, height: noseH)
                 self.noseImageView = UIImageView.init(frame: noseFrame)
                 let noseSnapshot = self.view.snapshot(of: noseFrame, afterScreenUpdates: true)
@@ -151,6 +173,7 @@ class ViewController: UIViewController {
         }
     }
     
+    //MARK:- Resize Image
     func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage? {
 
         let scale = newWidth / image.size.width
@@ -164,6 +187,7 @@ class ViewController: UIViewController {
         return newImage
     }
 
+    //MARK:- Animate Face
     func animateFace(image: UIImageView, direction: Bool){
         UIView.animate(withDuration: 0.3) {
             if direction{
@@ -179,6 +203,7 @@ class ViewController: UIViewController {
 
     }
 
+    //MARK:- Draw Life from Point A-B
     func drawLineFromPoint(start : CGPoint, toPoint end:CGPoint, ofColor lineColor: UIColor, inView view:UIView) {
         let path = UIBezierPath()
         path.move(to: start)
@@ -190,6 +215,7 @@ class ViewController: UIViewController {
         view.layer.addSublayer(shapeLayer)
     }
     
+    //MARK:- Animate Nose
     @IBAction func animateNose(_ sender: Any) {
         UIView.animate(withDuration: 0.3) {
             self.noseImageView.frame = CGRect(x: self.noseImageView.frame.origin.x-5, y: self.noseImageView.frame.origin.y, width: self.noseImageView.frame.size.width+10, height: self.noseImageView.frame.size.height)
@@ -200,6 +226,7 @@ class ViewController: UIViewController {
         }
     }
     
+    //MARK:- Animate Lips
     @IBAction func animateLips(_ sender: Any) {
         UIView.animate(withDuration: 0.3) {
             self.snippetImageView.frame = CGRect(x: self.snippetImageView.frame.origin.x, y: self.snippetImageView.frame.origin.y+10, width: self.snippetImageView.frame.size.width, height: self.snippetImageView.frame.size.height)
@@ -211,7 +238,9 @@ class ViewController: UIViewController {
     }
 }
 
+//MARK:- UIView Extension
 extension UIView {
+    //MARK: Take Snapshot
     func snapshot(of rect: CGRect? = nil, afterScreenUpdates: Bool = true) -> UIImage {
         return UIGraphicsImageRenderer(bounds: rect ?? bounds).image { _ in
             drawHierarchy(in: bounds, afterScreenUpdates: afterScreenUpdates)
