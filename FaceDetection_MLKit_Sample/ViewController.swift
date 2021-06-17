@@ -18,6 +18,7 @@ class ViewController: UIViewController {
     
     //MARK:- Variables
     var noseImageView : UIImageView!
+    var leftEyeBall : UIView!
     
     //MARK:- View Life Cycle
     override func viewDidLoad() {
@@ -37,10 +38,10 @@ class ViewController: UIViewController {
         options.performanceMode = .accurate
         options.landmarkMode = .all
         options.contourMode = .all
-        options.classificationMode = .none
+        options.classificationMode = .all
         
         //Adding image and resizing as per ML Kit guidelines
-        let sampleImage = resizeImage(image: UIImage.init(named: "face-1")!, newWidth: 400)!
+        let sampleImage = resizeImage(image: UIImage.init(named: "face-4")!, newWidth: 400)!
         faceImageView.image = sampleImage
         let image = UIImage.init()
         
@@ -54,18 +55,18 @@ class ViewController: UIViewController {
         //Starting face detection process
         weak var weakSelf = self
         faceDetector.process(visionImage) { faces, error in
-          guard let _ = weakSelf else {
-            print("Self is nil!")
-            return
-          }
-          guard error == nil, let faces = faces, !faces.isEmpty else {
-            // ...
-            return
-          }
+            guard let _ = weakSelf else {
+                print("Self is nil!")
+                return
+            }
+            guard error == nil, let faces = faces, !faces.isEmpty else {
+                // ...
+                return
+            }
 
             //Faces found
             for face in faces {
-              let faceFrame = face.frame
+                let faceFrame = face.frame
                 var lipsX = 0.0, lipsY=0.0, lipsW=0.0, lipsH=0.0        //Lips dimensions
                 var noseX = 0.0, noseY = 0.0, noseW = 0.0, noseH = 0.0  //Nose dimensions
                                 
@@ -76,6 +77,7 @@ class ViewController: UIViewController {
                     lipsX = Double(mouthLeftPos.x)
                     lipsY = Double(mouthLeftPos.y)
                 }
+                
                 if let mouthRight = face.landmark(ofType: .mouthRight){
                     let mouthRightPos = mouthRight.position
                     print("Mouth Right = \(mouthRightPos)")
@@ -96,7 +98,6 @@ class ViewController: UIViewController {
                     }
                     avgNoseHeight = avgNoseHeight/Double(nosePoints.count)
                     noseY = avgNoseHeight
-                    
                 }
                 
                 var avgNoseBottom = 0.0
@@ -123,17 +124,93 @@ class ViewController: UIViewController {
                 
                 lipsH = Double(faceFrame.origin.y+faceFrame.size.height) - lipsY
                 
-              if let leftEye = face.landmark(ofType: .leftEye) {
-                let leftEyePosition = leftEye.position
-                print("Left eye position \(leftEyePosition)")
-              }
+                var leftEyeX = 0.0
+                var leftEyeY = 0.0
+                if let leftEye = face.landmark(ofType: .leftEye) {
+                    let leftEyePosition = leftEye.position
+                    print("Left eye position \(leftEyePosition)")
+                    leftEyeX = Double(leftEyePosition.x)
+                    leftEyeY = Double(leftEyePosition.y)
+                    let eyeView = UIView.init(frame: CGRect(x: leftEyePosition.x, y: leftEyePosition.y, width: 5, height: 5))
+                    eyeView.backgroundColor = UIColor.black
+                    self.view.addSubview(eyeView)
+                }
                 
-              if let leftEyeContour = face.contour(ofType: .leftEye) {
-                let leftEyePoints = leftEyeContour.points
-                print("Left eye points \(leftEyePoints)")
-              }
+                if let rightEye = face.landmark(ofType: .rightEye) {
+                    let rightEyePosition = rightEye.position
+                    print("Right eye position \(rightEyePosition)")
+                  
+                    let eyeView = UIView.init(frame: CGRect(x: rightEyePosition.x, y: rightEyePosition.y, width: 5, height: 5))
+                    eyeView.backgroundColor = UIColor.black
+                    self.view.addSubview(eyeView)
+                }
                 
-                let frameOfLowerLip = CGRect.init(x: lipsX, y: lipsY, width: lipsW, height: lipsH)
+                var leftEyeTop = 0.0
+                var leftEyeBottom = 0.0
+                var leftEyeShapeArray:[CGPoint] = []
+                if let leftEyeContour = face.contour(ofType: .leftEye) {
+                    let leftEyePoints = leftEyeContour.points
+                    print("Left eye points \(leftEyePoints)")
+                    leftEyeTop = Double(leftEyePoints[0].y)
+                    leftEyeBottom = Double(leftEyePoints[0].y)
+                    var currentPoint:CGPoint = CGPoint(x: leftEyePoints[0].x, y: leftEyePoints[0].y)
+                    
+                    for eyes in leftEyePoints{
+                        leftEyeShapeArray.append(CGPoint(x: eyes.x, y: eyes.y))
+//                        self.drawLineFromPoint(start: currentPoint, toPoint: CGPoint(x: eyes.x, y: eyes.y), ofColor: .green, inView: self.view)
+                        if leftEyeTop<Double(eyes.y){
+                            leftEyeTop = Double(eyes.y)
+                        }
+                        if leftEyeBottom>Double(eyes.y){
+                            leftEyeBottom = Double(eyes.y)
+                        }
+                    currentPoint = CGPoint(x: eyes.x, y: eyes.y)
+                    }
+                }
+                self.drawShape(points: leftEyeShapeArray)
+                leftEyeY = leftEyeBottom
+                let heightOfLeftEye = leftEyeTop-leftEyeBottom
+                let widthOfLeftEye = heightOfLeftEye
+                
+                self.leftEyeBall = UIView.init(frame: CGRect(x: leftEyeX-5, y: leftEyeY, width: widthOfLeftEye, height: heightOfLeftEye))
+                self.leftEyeBall.backgroundColor = .black
+                self.leftEyeBall.layer.cornerRadius = self.leftEyeBall.frame.size.width/2
+                self.leftEyeBall.clipsToBounds = true
+                self.view.addSubview(self.leftEyeBall)
+                
+                
+
+                
+                var rightEyeShapeArray:[CGPoint] = []
+                var rightEyeTop = 0.0
+                var rightEyeBottom = 0.0
+                if let rightEyeContour = face.contour(ofType: .rightEye) {
+                    let rightEyePoints = rightEyeContour.points
+                    print("Left eye points \(rightEyePoints)")
+                    rightEyeTop = Double(rightEyePoints[0].y)
+                    rightEyeBottom = Double(rightEyePoints[0].y)
+                    var currentPoint:CGPoint = CGPoint(x: rightEyePoints[0].x, y: rightEyePoints[0].y)
+                    for eyes in rightEyePoints{
+//                        self.drawLineFromPoint(start: currentPoint, toPoint: CGPoint(x: eyes.x, y: eyes.y), ofColor: .red, inView: self.view)
+                        rightEyeShapeArray.append(CGPoint(x: eyes.x, y: eyes.y))
+                        
+                        currentPoint = CGPoint(x: eyes.x, y: eyes.y)
+                        if rightEyeTop<Double(eyes.y){
+                            rightEyeTop = Double(eyes.y)
+                        }
+                        if rightEyeBottom>Double(eyes.y){
+                            rightEyeBottom = Double(eyes.y)
+                        }
+                    }
+                }
+                
+//                self.drawShape(points: rightEyeShapeArray)
+                
+                
+                let heightOfRightEye = rightEyeTop-rightEyeBottom
+                let widthOfRightEye = heightOfRightEye
+                
+                let frameOfLowerLip = CGRect.init(x: lipsX-5, y: lipsY-5, width: lipsW, height: lipsH)
                 
                 //Taking screenshot of lips and adding it to another image which will animate
                 let snapshot = self.view.snapshot(of: frameOfLowerLip, afterScreenUpdates: true)
@@ -155,22 +232,49 @@ class ViewController: UIViewController {
                 
 
               // If classification was enabled:
-//              if face.hasSmilingProbability {
-//                let smileProb = face.smilingProbability
-//                print("Is smiling \(smileProb)")
-//              }
-//              if face.hasRightEyeOpenProbability {
-//                let rightEyeOpenProb = face.rightEyeOpenProbability
-//                print("Right eye open \(rightEyeOpenProb)")
-//              }
+//                if face.hasSmilingProbability {
+//                    let smileProb = face.smilingProbability
+//                    print("Is smiling \(smileProb)")
+//                }
+//                if face.hasRightEyeOpenProbability {
+//                    let rightEyeOpenProb = face.rightEyeOpenProbability
+//                    print("Right eye open \(rightEyeOpenProb)")
+//                }
 
               // If face tracking was enabled:
-//              if face.hasTrackingID {
-//                let trackingId = face.trackingID
-//                print("Tracking ID \(trackingId)")
-//              }
+//                if face.hasTrackingID {
+//                    let trackingId = face.trackingID
+//                    print("Tracking ID \(trackingId)")
+//                }
             }
         }
+    }
+
+    
+    //MARK:- Draw shape
+    func drawShape(points: [CGPoint]) {
+        let whiteView = UIImageView(frame: self.faceImageView.bounds)
+        let maskLayer = CAShapeLayer()
+        
+        // create the path
+        let path = UIBezierPath()
+        path.move(to: points[0])
+        for paths in points{
+            path.addLine(to: paths)
+        }
+        path.addLine(to: points[0])
+        path.close()
+        
+        // fill the path
+        UIColor.red.set()
+        path.fill()
+        
+        maskLayer.path = path.cgPath
+        whiteView.layer.mask = maskLayer
+        whiteView.clipsToBounds = true
+        whiteView.backgroundColor = .white
+//        whiteView.image = UIImage(named: "")
+        self.view.addSubview(whiteView)
     }
     
     //MARK:- Resize Image
@@ -213,6 +317,21 @@ class ViewController: UIViewController {
         shapeLayer.strokeColor = lineColor.cgColor
         shapeLayer.lineWidth = 1.0
         view.layer.addSublayer(shapeLayer)
+    }
+    
+    //MARK:- Animate Eyes
+    @IBAction func animateEyes(_ sender: Any) {
+        UIView.animate(withDuration: 0.5) {
+            self.leftEyeBall.frame = CGRect(x: self.leftEyeBall.frame.origin.x-10, y: self.leftEyeBall.frame.origin.y, width: self.leftEyeBall.frame.size.width, height: self.leftEyeBall.frame.size.height)
+        } completion: { (_) in
+            UIView.animate(withDuration: 0.5) {
+                self.leftEyeBall.frame = CGRect(x: self.leftEyeBall.frame.origin.x+20, y: self.leftEyeBall.frame.origin.y, width: self.leftEyeBall.frame.size.width, height: self.leftEyeBall.frame.size.height)
+            } completion: { (_) in
+                UIView.animate(withDuration: 0.5) {
+                    self.leftEyeBall.frame = CGRect(x: self.leftEyeBall.frame.origin.x-10, y: self.leftEyeBall.frame.origin.y, width: self.leftEyeBall.frame.size.width, height: self.leftEyeBall.frame.size.height)
+                }
+            }
+        }
     }
     
     //MARK:- Animate Nose

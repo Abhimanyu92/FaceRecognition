@@ -32,15 +32,22 @@
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="z1h-JS-5oZ">
                                 <rect key="frame" x="16" y="691.33333333333337" width="358" height="118.66666666666663"/>
                                 <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g7L-zP-YDz">
+                                        <rect key="frame" x="0.0" y="0.0" width="119.33333333333333" height="118.66666666666667"/>
+                                        <state key="normal" title="Eyes"/>
+                                        <connections>
+                                            <action selector="animateEyes:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CvH-L7-g4v"/>
+                                        </connections>
+                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uPn-ee-XbO">
-                                        <rect key="frame" x="0.0" y="0.0" width="179" height="118.66666666666667"/>
+                                        <rect key="frame" x="119.33333333333334" y="0.0" width="119.33333333333334" height="118.66666666666667"/>
                                         <state key="normal" title="Nose"/>
                                         <connections>
                                             <action selector="animateNose:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ebl-XQ-lrf"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ORb-g1-Kwm">
-                                        <rect key="frame" x="179" y="0.0" width="179" height="118.66666666666667"/>
+                                        <rect key="frame" x="238.66666666666666" y="0.0" width="119.33333333333334" height="118.66666666666667"/>
                                         <state key="normal" title="Lips"/>
                                         <connections>
                                             <action selector="animateLips:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9MD-h4-BJB"/>
